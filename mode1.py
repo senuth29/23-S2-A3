@@ -5,38 +5,37 @@ class Mode1Navigator:
     """
     Student-TODO: short paragraph as per https://edstem.org/au/courses/12108/lessons/42810/slides/294117
     """
-
     def __init__(self, islands: list[Island], crew: int) -> None:
-        """
-        Student-TODO: Best/Worst Case
-        Best case -> 
-        Worst case -> O(nlog(n)) or less
-        """
-        self.island_bst = BinarySearchTree()
-        for island in islands:
-            self.island_bst[island.money / island.marines] = island
-        
-        self.crew = crew
+            """
+            Student-TODO: Best/Worst Case
+            Best case -> 
+            Worst case -> O(nlog(n)) or less
+            """
+            self.island_bst = BinarySearchTree()
+            for island in islands:
+                self.island_bst[island.money / island.marines] = island
+            
+            self.crew = crew
 
 
     def select_islands(self) -> list[tuple[Island, int]]:
-        """
-        Student-TODO: Best/Worst Case
-        Best case -> O(log(n)) or less
-        Worst case -> O(n) or less
-        """
-        selected_islands = []
-        remaining_crew = self.crew
+            """
+            Student-TODO: Best/Worst Case
+            Best case -> O(log(n)) or less
+            Worst case -> O(n) or less
+            """
+            selected_islands = []
+            remaining_crew = self.crew
 
-        while remaining_crew > 0 and not self.island_bst.is_empty():
-            island = self.island_bst.root.item
-            if island > 0:
-                pirates_sent = min(remaining_crew, island.marines)
-                selected_islands.append(island, pirates_sent)
-                remaining_crew -= pirates_sent
-                del self.island_bst[island]
-                
-        return selected_islands
+            while remaining_crew > 0 and not self.island_bst.is_empty():
+                island = self.island_bst.root.item
+                if island.money > 0:
+                    pirates_sent = min(remaining_crew, island.marines)
+                    selected_islands.append((island, pirates_sent))
+                    remaining_crew -= pirates_sent
+                    del self.island_bst[island.money / island.marines]
+                    
+            return selected_islands
 
     def select_islands_from_crew_numbers(self, crew_numbers: list[int]) -> list[float]:
         """
@@ -71,3 +70,19 @@ class Mode1Navigator:
             island.money = new_money
             island.marines = new_marines
             self.island_bst[new_money / new_marines] = island
+
+  
+if __name__ == "__main__":
+    a = Island("A", 400, 100)
+    b = Island("B", 300, 150)
+    c = Island("C", 100, 5)
+    d = Island("D", 350, 90)
+    e = Island("E", 300, 100)
+    # Create deepcopies of the islands
+    islands = [
+        Island(a.name, a.money, a.marines),
+        Island(b.name, b.money, b.marines),
+        Island(c.name, c.money, c.marines),
+        Island(d.name, d.money, d.marines),
+        Island(e.name, e.money, e.marines),
+    ]
